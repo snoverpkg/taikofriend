@@ -18,10 +18,10 @@ public:
 
 class Chaos : public PMod {
 public:
-	const int chaosWindow = 7;
-	const float base = 0.9F;
-	const float scaler = 0.4F;
-	const float maxMod = 1.1F;
+	const int chaosWindow = 14;
+	const float base = 0.7F;
+	const float scaler = 0.9F;
+	const float maxMod = 1.0F;
 	const float minMod = 1.F;
 	float calcCV(std::vector<float>* msVals);
 	void calcChaos(Chart* c);

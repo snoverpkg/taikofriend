@@ -341,7 +341,7 @@ int main(int, char**)
                         << chart.NoteData.NoteMS[i] << "," 
                         << chart.NoteData.adjMS[i] << "," 
                         << chart.NoteData.adj_diffs[i] << "," 
-                        << ptLoss(squd, chart.NoteData.baseDiffs[i]) << "," 
+                        << ptLoss(squd, chart.NoteData.adj_diffs[i]) << "," 
                         << ChaosMod.pmodValues[i] << "," 
                         << CDMod.pmodValues[i] << ","
                         << StamMod.pmodValues[i] << std::endl;
