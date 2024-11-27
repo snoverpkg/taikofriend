@@ -366,3 +366,4 @@ FodyWeavers.xsd
 scores*.csv
 paths.txt
 imgui.ini
+debug.txt
