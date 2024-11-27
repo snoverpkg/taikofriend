@@ -8,7 +8,7 @@ const float minMS = 10.F;
 const int smoothWindow = 5;
 const float curNoteWeight = 0.F;
 
-const float baseScaler = 0.98F;
+const float baseScaler = 1.F;
 const float ppscaler = 2.0F;
 
 const float accCap = 0.98F;
