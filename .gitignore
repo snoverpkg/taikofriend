@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+## program created files
+scores*.csv
+paths.txt
+imgui.ini
