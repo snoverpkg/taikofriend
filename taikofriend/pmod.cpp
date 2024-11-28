@@ -22,19 +22,33 @@ float Chaos::calcCV(std::vector<float>* msVals) {
 
 void Chaos::calcChaos(Chart* c) {
 	this->pmodValues.clear();
-	std::vector<float> chaosMS;
-	for (int i = 0; i < chaosWindow; i++) {
-		chaosMS.push_back(defaultMS / this->maxChaosMSProp);
+	bool chaosFlag = false;
+	std::vector<bool> chaosFlags;
+	chaosFlags.push_back(chaosFlag);
+	for (int i = 1; i < c->NoteData.NoteMS.size(); i++) {
+		float curNote = c->NoteData.NoteMS[i];
+		float lastNote = c->NoteData.NoteMS[i - 1];
+		if (std::abs(curNote - lastNote) > curNote * this->chaosThreshold) {
+			chaosFlag = true;
+		}
+		else {
+			chaosFlag = false;
+		}
+		chaosFlags.push_back(chaosFlag);
 	}
 
-	float curMS;
-	float cv;
-	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
-		curMS = std::min((float)c->NoteData.NoteMS[i], defaultMS / this->maxChaosMSProp);
-		chaosMS.erase(chaosMS.begin());
-		chaosMS.push_back(curMS);
-		cv = this->calcCV(&chaosMS);
-		this->pmodValues.push_back(std::clamp(base + cv * scaler, minMod, maxMod));
+	int chaosSum = 0;
+	std::vector<int> windowSums;
+	for (int i = 0; i < c->NoteData.NoteMS.size(); i++) {
+		chaosSum = 0;
+		for (int j = 0; (j < chaosWindow) && (i - j >= 0); j++) {
+			chaosSum += chaosFlags[j];
+		}
+		windowSums.push_back(chaosSum);
+	}
+
+	for (int i = 0; i < windowSums.size(); i++) {
+		this->pmodValues.push_back(std::clamp(windowSums[i] * scaler / (float)chaosWindow + base, this->minMod, this->maxMod));
 	}
 }
 #pragma endregion

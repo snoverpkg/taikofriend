@@ -19,11 +19,11 @@ public:
 class Chaos : public PMod {
 public:
 	const int chaosWindow = 4;
-	const float base = 0.8F;
-	const float scaler = 0.6F;
+	const float base = 0.9F;
+	const float scaler = 0.2F;
 	const float maxMod = 1.2F;
 	const float minMod = 1.F;
-	const float maxChaosMSProp = 20.F;
+	const float chaosThreshold = 0.1F;
 	float calcCV(std::vector<float>* msVals);
 	void calcChaos(Chart* c);
 };
