@@ -24,13 +24,13 @@ void Chaos::calcChaos(Chart* c) {
 	this->pmodValues.clear();
 	std::vector<float> chaosMS;
 	for (int i = 0; i < chaosWindow; i++) {
-		chaosMS.push_back(defaultMS);
+		chaosMS.push_back(defaultMS / this->maxChaosMSProp);
 	}
 
 	float curMS;
 	float cv;
 	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
-		curMS = c->NoteData.NoteMS[i];
+		curMS = std::min((float)c->NoteData.NoteMS[i], defaultMS / this->maxChaosMSProp);
 		chaosMS.erase(chaosMS.begin());
 		chaosMS.push_back(curMS);
 		cv = this->calcCV(&chaosMS);
