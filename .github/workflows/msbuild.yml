@@ -32,11 +32,7 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Setup Visual Studio
-      uses: microsoft/setup-visual-studio@v1
-      with:
-        channel: 2019
-
     - name: Build solution
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: |
+            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\MSBuild\\Current\\Bin\\MSBuild.exe" /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
