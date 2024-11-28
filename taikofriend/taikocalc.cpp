@@ -120,6 +120,8 @@ float calcMain(Chart* c, float goal, Mods mods) {
     //main pmod calc part sex indian orgy desi feet
     ChaosMod.calcChaos(c);
     CDMod.calcCD(c);
+    LengthMod.calcBonus(c);
+
     //run stammod on base diffs since that's a better representation of the actual physical difficulty
     StamMod.calcStam(c, diffIteration(&c->NoteData.baseDiffs, goal));
 
@@ -128,12 +130,14 @@ float calcMain(Chart* c, float goal, Mods mods) {
         c->NoteData.adj_diffs[i] *= ChaosMod.pmodValues[i];
         c->NoteData.adj_diffs[i] *= CDMod.pmodValues[i];
         c->NoteData.adj_diffs[i] *= StamMod.pmodValues[i];
+        c->NoteData.adj_diffs[i] *= LengthMod.pmodValues[i];
     }
 
     //remember to actually clear the pmodvalues so it doesn't break the whole calc...
     ChaosMod.pmodValues.clear();
     CDMod.pmodValues.clear();
     StamMod.pmodValues.clear();
+    LengthMod.pmodValues.clear();
 
     float od = calcEffOD(c, mods);
     float odMult = odAdjust(od);

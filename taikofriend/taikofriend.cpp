@@ -28,6 +28,7 @@ const int programver = 4;
 Chaos ChaosMod;
 ConsecutiveDoubles CDMod;
 Stamina StamMod;
+StreamLengthBonus LengthMod;
 
 std::string formatTime(std::time_t now) {
     struct std::tm tmTime = std::tm();
@@ -344,7 +345,8 @@ int main(int, char**)
                         << ptLoss(squd, chart.NoteData.adj_diffs[i]) << "," 
                         << ChaosMod.pmodValues[i] << "," 
                         << CDMod.pmodValues[i] << ","
-                        << StamMod.pmodValues[i] << std::endl;
+                        << StamMod.pmodValues[i] << ","
+                        << LengthMod.pmodValues[i] << std::endl;
                 }
 
                 calcDebugFile << "-------------" << std::endl;

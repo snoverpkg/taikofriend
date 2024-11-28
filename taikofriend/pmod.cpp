@@ -143,3 +143,21 @@ void Stamina::calcStam(Chart* c, float rating) {
 	}
 }
 #pragma endregion
+
+#pragma region StreamLengthBonus
+void StreamLengthBonus::calcBonus(Chart* c) {
+	int len = 1;
+	this->pmodValues.push_back(this->minMod);
+	for (int i = 1; i < c->NoteData.NoteMS.size(); i++) {
+		float curNote = c->NoteData.NoteMS[i];
+		float lastNote = c->NoteData.NoteMS[i - 1];
+		if ((this->stringProp < curNote / lastNote) && (curNote / lastNote < (1.F / this->stringProp))) {
+			len++;
+		}
+		else {
+			len = 1;
+		}
+		this->pmodValues.push_back(std::clamp(this->base + 1.F - scaler / std::pow((float)len, 1 / this->magnitude), this->minMod, this->maxMod));
+	}
+}
+#pragma endregion

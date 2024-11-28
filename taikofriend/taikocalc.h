@@ -8,7 +8,7 @@ const float minMS = 10.F;
 const int smoothWindow = 4;
 const float curNoteWeight = 0.F;
 
-const float baseScaler = 0.965F;
+const float baseScaler = 0.96F;
 const float ppscaler = 2.0F;
 
 const float accCap = 0.98F;
@@ -36,4 +36,4 @@ float odAdjust(double od);
 
 float accLinearExtrapolation(float acc);
 
-const int calcver = 15;
+const int calcver = 16;

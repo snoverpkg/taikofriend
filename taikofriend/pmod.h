@@ -43,7 +43,19 @@ public:
 
 };
 
+class StreamLengthBonus : public PMod {
+public:
+	const float base = 0.3F;
+	const float scaler = 2.F;
+	const float magnitude = 2.F;
+	const float minMod = 1.F;
+	const float maxMod = 1.3F;
+	const float stringProp = 0.6F;
+	void calcBonus(Chart* c);
+};
+
 extern Chaos ChaosMod;
 extern ConsecutiveDoubles CDMod;
 extern Stamina StamMod;
 extern GeneralPatternComplexity ComplexMod;
+extern StreamLengthBonus LengthMod;
