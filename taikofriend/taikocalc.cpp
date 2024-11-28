@@ -103,7 +103,11 @@ float diffIteration(std::vector<float>* diffs, float goal) {
 
 float calcMain(Chart* c, float goal, Mods mods) {
     if (c->NoteData.NoteInfo.size() == 0) {
-        std::cout << "are you fucking retarded?" << std::endl;
+        std::cout << "file not found: " << 
+            c->MetaData.artist << " - " <<
+            c->MetaData.title << " (" <<
+            c->MetaData.creator << ") [" <<
+            c->MetaData.diff << "]" << std::endl;
         return 0;
     }
 
