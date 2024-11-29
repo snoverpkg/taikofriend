@@ -287,8 +287,9 @@ int main(int, char**)
                 scoreFile.close();
 
                 for (int i = 0; i < scores.size(); i++) {
-                    if (chartFinder(scores[i].Chart.MetaData) == "failed") continue;
-                    scores[i].Chart.NoteData = chartReader(chartFinder(scores[i].Chart.MetaData), true).NoteData;
+                    std::string path = chartFinder(scores[i].Chart.MetaData);
+                    if (path == "failed") continue;
+                    scores[i].Chart.NoteData = chartReader(path, true).NoteData;
                     scores[i].Rating = calcMain(&scores[i].Chart, scores[i].Acc, (Mods)scores[i].Mods);
                     //remove chart data later when it matters (it won't)
                 }
