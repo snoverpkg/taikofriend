@@ -210,7 +210,7 @@ std::string chartFinder(MetaData zoinkers) {
     std::string path;
     std::string search = zoinkers.artist + zoinkers.title + zoinkers.creator + zoinkers.diff;
     std::unordered_map<std::string, std::string>::iterator find = chartPathsLookupTable.find(search);
-    if (find == chartPathsLookupTable.end()) return path;
+    if (find == chartPathsLookupTable.end()) return "failed";
     path = find->second;
     return path;
 }

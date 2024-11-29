@@ -151,6 +151,7 @@ void StreamLengthBonus::calcBonus(Chart* c) {
 	for (int i = 1; i < c->NoteData.NoteMS.size(); i++) {
 		float curNote = c->NoteData.NoteMS[i];
 		float lastNote = c->NoteData.NoteMS[i - 1];
+		//potentially abusable, ignore until it becomes a problem
 		if ((this->stringProp < curNote / lastNote) && (curNote / lastNote < (1.F / this->stringProp))) {
 			len++;
 		}
