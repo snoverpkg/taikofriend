@@ -289,7 +289,7 @@ int main(int, char**)
                 for (int i = 0; i < scores.size(); i++) {
                     std::string path = chartFinder(scores[i].Chart.MetaData);
                     if (path == "failed") continue;
-                    scores[i].Chart.NoteData = chartReader(path, true).NoteData;
+                    scores[i].Chart = chartReader(path, true);
                     scores[i].Rating = calcMain(&scores[i].Chart, scores[i].Acc, (Mods)scores[i].Mods);
                     //remove chart data later when it matters (it won't)
                 }
