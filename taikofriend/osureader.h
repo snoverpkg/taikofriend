@@ -37,7 +37,7 @@ struct Score {
 	std::string ModString;
 	std::string Date;
 	int CalcVer;
-	float Rating;
+	float Rating = 0;
 };
 
 static std::unordered_map<std::string, std::string> chartPathsLookupTable;
