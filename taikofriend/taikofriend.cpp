@@ -287,6 +287,7 @@ int main(int, char**)
                 scoreFile.close();
 
                 for (int i = 0; i < scores.size(); i++) {
+                    scores[i].Rating = std::sqrt(scores[i].Rating / 2);
                     std::string path = chartFinder(scores[i].Chart.MetaData);
                     if (path == "failed") continue;
                     scores[i].Chart = chartReader(path, true);
