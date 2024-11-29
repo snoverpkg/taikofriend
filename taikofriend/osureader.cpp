@@ -243,9 +243,11 @@ Score readScore(std::string scoreData) {
     score.Chart.MetaData.title = metadata[1];
     score.Chart.MetaData.creator = metadata[2];
     score.Chart.MetaData.diff = metadata[3];
+    score.Chart.MetaData.id = std::stoi(metadata[4]);
     score.Date = metadata[5];
     score.ModString = metadata[6];
     score.Acc = std::stof(metadata[7]);
+    score.Rating = std::stof(metadata[8]);
     score.CalcVer = std::stoi(metadata[9]);
 
     if (score.ModString.find("EZ") != std::string::npos) score.Mods += Mods::EZ;
