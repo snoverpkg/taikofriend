@@ -48,6 +48,9 @@ Chart chartReader(std::string path, bool processNotes);
 void noteInterpreter(Chart* c);
 
 void setPath(std::string path);
+void writePaths(std::ofstream* file);
+
+void threadPathLoader(const std::string& path, const std::string& ext, const std::regex& regexFilter);
 void fullProcess();
 void differentialProcess();
 void loadPaths();

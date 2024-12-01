@@ -112,28 +112,40 @@ void setPath(std::string _path) {
     path = _path;
 }
 
-static std::mutex pathMutex;
 static std::vector<std::string> paths;
+std::mutex mtx;
+
+void writePaths(std::ofstream* file) {
+    for (auto c : paths) {
+        Chart chart = chartReader(c, false);
+        std::string chartInfo = chart.MetaData.artist + chart.MetaData.title + chart.MetaData.creator + chart.MetaData.diff;
+
+        if (file->is_open()) {
+            *file << chartInfo << std::endl << c << std::endl;
+        }
+
+        chartPathsLookupTable.insert(std::make_pair(chartInfo, c));
+    }
+}
 
 void threadPathLoader(const std::string& path, const std::string& ext, const std::regex& regexFilter) {
     for (const auto& p : std::filesystem::recursive_directory_iterator(path)) {
         if (p.path().extension() == ext) {
-            std::string folderName = p.path().parent_path().filename().string();
-            if (std::regex_match(folderName, regexFilter)) {
-                try {
-                    std::lock_guard<std::mutex> lock(pathMutex);
+            try {
+                std::string folderName = p.path().parent_path().filename().string();
+                if (std::regex_match(folderName, regexFilter)) {
+                    const std::lock_guard<std::mutex> guard(mtx);
                     paths.push_back(p.path().string());
                 }
-                catch (...) {
-                    continue;
-                }
+            }
+            catch (...) {
+                continue;
             }
         }
     }
 }
 
-
-//processes all files and ideally also recalcs all your saved scores
+//processes all files
 void fullProcess() {
     unsigned int threadCount = std::thread::hardware_concurrency();
     if (threadCount == 0) threadCount = 1;
@@ -175,20 +187,8 @@ void fullProcess() {
         t.join();
     }
 
-    //fix this later it sucks
     std::ofstream pathFile("paths.txt");
-    for (auto c : paths) {
-        Chart chart = chartReader(c, false);
-        std::string chartInfo = chart.MetaData.artist + chart.MetaData.title + chart.MetaData.creator + chart.MetaData.diff;
-        
-        if (pathFile.is_open()) {
-            pathFile << chartInfo << std::endl << c << std::endl;
-        }
-
-        chartPathsLookupTable.insert(std::make_pair(chartInfo, c));
-
-        //im leaving this empty for now
-    }
+    writePaths(&pathFile);
     pathFile.close();
     paths.clear();
 }
@@ -215,20 +215,8 @@ void differentialProcess() {
         }
     }
 
-    //fix this later it sucks
     std::ofstream pathFile("paths.txt", std::ios::app);
-    for (auto c : paths) {
-        Chart chart = chartReader(c, false);
-        std::string chartInfo = chart.MetaData.artist + chart.MetaData.title + chart.MetaData.creator + chart.MetaData.diff;
-
-        if (pathFile.is_open()) {
-            pathFile << chartInfo << std::endl << c << std::endl;
-        }
-
-        chartPathsLookupTable.insert(std::make_pair(chartInfo, c));
-
-        //im leaving this empty for now
-    }
+    writePaths(&pathFile);
     pathFile.close();
     paths.clear();
 }
