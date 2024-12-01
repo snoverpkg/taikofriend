@@ -57,5 +57,4 @@ public:
 extern Chaos ChaosMod;
 extern ConsecutiveDoubles CDMod;
 extern Stamina StamMod;
-extern GeneralPatternComplexity ComplexMod;
 extern StreamLengthBonus LengthMod;
