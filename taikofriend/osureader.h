@@ -7,6 +7,8 @@
 #include <sstream>
 #include <unordered_map>
 #include <regex>
+#include <mutex>
+#include <thread>
 
 struct NoteData {
 	std::vector<std::pair<unsigned int, unsigned int>> NoteInfo;

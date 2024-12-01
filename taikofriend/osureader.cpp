@@ -112,21 +112,67 @@ void setPath(std::string _path) {
     path = _path;
 }
 
+static std::mutex pathMutex;
 static std::vector<std::string> paths;
+
+void threadPathLoader(const std::string& path, const std::string& ext, const std::regex& regexFilter) {
+    for (const auto& p : std::filesystem::recursive_directory_iterator(path)) {
+        if (p.path().extension() == ext) {
+            std::string folderName = p.path().parent_path().filename().string();
+            if (std::regex_match(folderName, regexFilter)) {
+                try {
+                    std::lock_guard<std::mutex> lock(pathMutex);
+                    paths.push_back(p.path().string());
+                }
+                catch (...) {
+                    continue;
+                }
+            }
+        }
+    }
+}
+
 
 //processes all files and ideally also recalcs all your saved scores
 void fullProcess() {
+    unsigned int threadCount = std::thread::hardware_concurrency();
+    if (threadCount == 0) threadCount = 1;
+    std::vector<std::regex> regexFilters;
+    std::vector<std::thread> threads;
+
+    //code worth shoving a fork in the electrical outlet
+    if (threadCount <= 3) {
+        regexFilters = { std::regex(".*") };
+    }
+    else if (threadCount >= 4 && threadCount <= 7) {
+        regexFilters = {
+            std::regex("^[0-3].*"),
+            std::regex("^[4-6].*"),
+            std::regex("^[7-9].*"),
+            std::regex("^[^0-9].*")
+        };
+    }
+    else {
+        regexFilters = {
+            std::regex("^[0-1].*"),
+            std::regex("^[2].*"),
+            std::regex("^[3].*"),
+            std::regex("^[4].*"),
+            std::regex("^[5].*"),
+            std::regex("^[6-7].*"),
+            std::regex("^[8-9].*"),
+            std::regex("^[^0-9].*") };
+    }
+
+    size_t threadsToUse = regexFilters.size();
     chartPathsLookupTable.clear();
-    for (auto& p : std::filesystem::recursive_directory_iterator(path))
-    {
-        if (p.path().extension() == ext) {
-            try {
-                paths.push_back(p.path().string());
-            }
-            catch (...) {
-                continue;
-            }
-        }
+
+    for (size_t i = 0; i < threadsToUse; ++i) {
+        threads.emplace_back(threadPathLoader, path, ext, regexFilters[i % threadsToUse]);
+    }
+
+    for (auto& t : threads) {
+        t.join();
     }
 
     //fix this later it sucks
