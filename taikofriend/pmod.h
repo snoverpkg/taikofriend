@@ -38,11 +38,6 @@ public:
 	void calcStam(Chart* c, float rating);
 };
 
-class GeneralPatternComplexity : public PMod {
-public:
-
-};
-
 class StreamLengthBonus : public PMod {
 public:
 	const float base = 0.3F;
