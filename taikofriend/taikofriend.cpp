@@ -201,7 +201,7 @@ int main(int, char**)
 
             ImGui::Text("%s - %s (%s) [%s]", artistD, titleD, creatorD, diffD);
 
-            ImGui::InputFloat("acc", &acc);
+            ImGui::InputFloat("acc", &acc, 0.F, 0.F, "%.2f");
 
             ImGui::Checkbox("EZ", &ez);
             ImGui::SameLine();
@@ -258,9 +258,9 @@ int main(int, char**)
             ImGui::SameLine();
             ImGui::Checkbox("Save Score", &saveScore);
 
-            ImGui::Text("pp: %f", ppstyle);
-            ImGui::Text("msd: %f", msdstyle);
-            ImGui::Text("sr: %f*", srstyle);
+            ImGui::Text("pp: %.2f", ppstyle);
+            ImGui::Text("msd: %.2f", msdstyle);
+            ImGui::Text("sr: %.2f*", srstyle);
 
             if (ImGui::Button("recalc all scores")) {
                 //fix potential problems with metadata later when it actually matters
