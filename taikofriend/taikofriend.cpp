@@ -148,6 +148,17 @@ int main(int, char**)
 
     std::chrono::system_clock clock;
 
+    std::string sPath;
+    std::ifstream songsFolder("songpath.txt");
+    if (songsFolder.is_open()) {
+        getline(songsFolder, sPath);
+        setPath(sPath);
+        strcpy_s(path, sPath.c_str());
+    }
+    else {
+        std::cout << "could not open songpath.txt" << std::endl;
+    }
+
     loadPaths();
 
     // Main loop
@@ -201,7 +212,7 @@ int main(int, char**)
 
             ImGui::Text("%s - %s (%s) [%s]", artistD, titleD, creatorD, diffD);
 
-            ImGui::InputFloat("acc", &acc, 0.F, 0.F, "%.2f");
+            ImGui::InputFloat("acc%", &acc, 0.F, 0.F, "%.2f");
 
             ImGui::Checkbox("EZ", &ez);
             ImGui::SameLine();
@@ -224,7 +235,7 @@ int main(int, char**)
                 if (chartPath != "failed") {
                     chart = chartReader(chartPath, true);
                     Chart chart2 = chart;
-                    acc = acc / 100;
+                    acc /= 100.F;
                     msdstyle = calcMain(&chart, acc, (Mods)mods);
                     ppstyle = msdstyle * msdstyle * ppscaler;
                     srstyle = calcMain(&chart2, 0.95F, (Mods)mods) / 2;
@@ -244,12 +255,9 @@ int main(int, char**)
                                 << calcver
                                 << std::endl;
                         }
-                        else {
-
-                        }
                         scoreFile.close();
-                        acc = acc * 100; //for imgui
                     }
+                    acc *= 100.F; //for imgui
                 }
                 else {
                     std::cout << "could not locate beatmap data\n";
@@ -320,8 +328,17 @@ int main(int, char**)
                 scoreRecalc.close();
             }
 
-            if(ImGui::InputTextWithHint("osu! path", "osu! songs folder path", path, IM_ARRAYSIZE(path), flags)) setPath(path);
-            std::string sPath = path;
+            if (ImGui::InputTextWithHint("osu! path", "osu! songs folder path", path, IM_ARRAYSIZE(path), flags)) {
+                sPath = path;
+                setPath(path);
+                std::ofstream pathConfig("songpath.txt");
+                if (pathConfig.is_open()) {
+                    pathConfig << path;
+                }
+                else {
+                    std::cout << "could not save osu path" << std::endl;
+                }
+            }
 
             if (ImGui::Button("process all files")) {
                 if (sPath.find("\\Songs") != std::string::npos) {
