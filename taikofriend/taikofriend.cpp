@@ -224,6 +224,7 @@ int main(int, char**)
                 if (chartPath != "failed") {
                     chart = chartReader(chartPath, true);
                     Chart chart2 = chart;
+                    acc = acc / 100;
                     msdstyle = calcMain(&chart, acc, (Mods)mods);
                     ppstyle = msdstyle * msdstyle * ppscaler;
                     srstyle = calcMain(&chart2, 0.95F, (Mods)mods) / 2;
@@ -247,6 +248,7 @@ int main(int, char**)
 
                         }
                         scoreFile.close();
+                        acc = acc * 100; //for imgui
                     }
                 }
                 else {
