@@ -23,7 +23,7 @@
 #include <ctime>
 #include "pmod.h"
 
-const int programver = 5;
+const int programver = 6;
 
 Chaos ChaosMod;
 ConsecutiveDoubles CDMod;

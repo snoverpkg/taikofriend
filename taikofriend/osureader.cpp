@@ -29,6 +29,7 @@ Chart chartReader(std::string path, bool processNotes) {
                         readInfo = false;
                     }
                     if (line == "[HitObjects]") {
+                        if (!processNotes) break;
                         readNotes = true;
                         getline(file, line);
                     }
