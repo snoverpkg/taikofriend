@@ -16,6 +16,14 @@ public:
 	void calcCD(Chart* c);
 };
 
+class ConsecutiveDoublesTheSequel : public PMod {
+public:
+	const float base = 0.99F;
+	const float maxMod = 1.0F;
+	const float minMod = 0.50F;
+	void calcCD(Chart* c);
+};
+
 class Chaos : public PMod {
 public:
 	const int chaosWindow = 4;
@@ -51,5 +59,6 @@ public:
 
 extern Chaos ChaosMod;
 extern ConsecutiveDoubles CDMod;
+extern ConsecutiveDoublesTheSequel CD2Mod;
 extern Stamina StamMod;
 extern StreamLengthBonus LengthMod;

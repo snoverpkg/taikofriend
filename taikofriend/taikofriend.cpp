@@ -27,6 +27,7 @@ const int programver = 6;
 
 Chaos ChaosMod;
 ConsecutiveDoubles CDMod;
+ConsecutiveDoublesTheSequel CD2Mod;
 Stamina StamMod;
 StreamLengthBonus LengthMod;
 
