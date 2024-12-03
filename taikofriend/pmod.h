@@ -49,7 +49,7 @@ public:
 class StreamLengthBonus : public PMod {
 public:
 	const float base = 0.25F;
-	const float scaler = 0.6F;
+	const float scaler = 1.F;
 	const float magnitude = 2.F;
 	const float minMod = 1.F;
 	const float maxMod = 1.3F;
