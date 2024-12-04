@@ -58,3 +58,5 @@ void loadPaths();
 std::string chartFinder(MetaData zoinkers);
 
 Score readScore(std::string scoreData);
+
+std::string getPathFromTable(int index);

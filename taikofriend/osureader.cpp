@@ -17,6 +17,7 @@ Chart chartReader(std::string path, bool processNotes) {
     int curLine = 0;
     bool checkBeatmapID = false;
 
+    //we should really filter out non-taiko files or at least tag them by mode at some point to speed things up
     std::ifstream file(path);
     try {
         if (file.is_open() && file.peek() != EOF) {
@@ -291,4 +292,11 @@ Score readScore(std::string scoreData) {
     if (score.ModString.find("DT") != std::string::npos) score.Mods += Mods::DT;
 
     return score;
+}
+
+std::string getPathFromTable(int index) {
+    std::unordered_map<std::string, std::string>::iterator iter = chartPathsLookupTable.begin();
+    std::advance(iter, index);
+    if (iter == chartPathsLookupTable.end()) return "end";
+    return iter->second;
 }

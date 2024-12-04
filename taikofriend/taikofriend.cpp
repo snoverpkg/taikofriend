@@ -23,7 +23,7 @@
 #include <ctime>
 #include "pmod.h"
 
-const int programver = 6;
+const int programver = 7;
 
 Chaos ChaosMod;
 ConsecutiveDoubles CDMod;
@@ -388,6 +388,48 @@ int main(int, char**)
                 }
                 else {
                     std::cout << "could not locate osu! songs folder" << std::endl;
+                }
+            }
+            
+            ImGui::SameLine();
+            if (ImGui::Button("calc every file")) {
+                std::ofstream calcFile("ratings.txt");
+                if (calcFile.is_open()) {
+                    int index = 0;
+                    std::string curPath;
+                    std::string modsString;
+                    while(curPath != "end"){
+                        curPath = getPathFromTable(index);
+                        for (int i = 0; i < 3; i++) {
+                            Mods mods;
+                            switch (i) {
+                            case 0:
+                                mods = (Mods)0;
+                                modsString.clear();
+                                break;
+                            case 1:
+                                mods = Mods::HT;
+                                modsString = "HT";
+                                break;
+                            case 2:
+                                mods = Mods::DT;
+                                modsString = "DT";
+                            }
+                            Chart chart = chartReader(curPath, true);
+                            float rating = calcMain(&chart, 0.95F, mods);
+
+                            calcFile << chart.MetaData.artist << ","
+                                << chart.MetaData.title << ","
+                                << chart.MetaData.creator << ","
+                                << chart.MetaData.diff << ","
+                                << modsString << ","
+                                << rating / 2 << std::endl;
+                        }
+                        index++;
+                    }
+                }
+                else {
+                    std::cout << "could not create ratings.txt" << std::endl;
                 }
             }
 
