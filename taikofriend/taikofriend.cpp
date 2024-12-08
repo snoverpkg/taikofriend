@@ -301,7 +301,9 @@ int main(int, char**)
                     scores[i].Rating = std::sqrt(scores[i].Rating / ppscaler);
                     std::string path = chartFinder(scores[i].Chart.MetaData);
                     if (path == "failed") continue;
-                    scores[i].Chart = chartReader(path, true);
+                    Chart thisChart = chartReader(path, true);
+                    if (thisChart.MetaData.diff != scores[i].Chart.MetaData.diff) continue;
+                    scores[i].Chart = thisChart;
                     scores[i].Rating = calcMain(&scores[i].Chart, scores[i].Acc, (Mods)scores[i].Mods);
                     //remove chart data later when it matters (it won't)
                 }
