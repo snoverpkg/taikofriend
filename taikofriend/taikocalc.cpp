@@ -25,11 +25,11 @@ void smoothMS(Chart* c) {
         smoothie.erase(smoothie.begin());
         float curMS = c->NoteData.NoteMS[note];
         smoothie.push_back(curMS);
-        float totalMS = 0;
+        float totalMS = 1;
         for (int i = 0; i < smoothWindow; i++) {
-            totalMS += smoothie[i];
+            totalMS *= std::pow(smoothie[i], (1.F / smoothWindow));
         }
-        totalMS /= smoothWindow;
+        //totalMS /= smoothWindow;
         totalMS = (1 - curNoteWeight) * totalMS + curNoteWeight * curMS;
         c->NoteData.adjMS.push_back(totalMS);
     }
@@ -51,7 +51,7 @@ float ptLoss(float x, float y) {
     float c = 1.2F;
     return std::max((1 / (1 - (1 / b) / 2)) * (std::erf((y - x) / a - c) + b), 0.F);
     */
-    return std::min(pow(std::max(y - x, 0.0F) / 8.F, 1.F), 1.F);
+    return std::min(pow(std::max(y - x, 0.0F) / 5.F, 2.F), 1.F);
 }
 
 double calcEffOD(Chart* c, Mods mods) {

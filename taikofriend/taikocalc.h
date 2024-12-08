@@ -36,4 +36,4 @@ float odAdjust(double od);
 
 float accLinearExtrapolation(float acc);
 
-const int calcver = 19;
+const int calcver = 20;
