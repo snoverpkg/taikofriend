@@ -51,7 +51,7 @@ float ptLoss(float x, float y) {
     float c = 1.2F;
     return std::max((1 / (1 - (1 / b) / 2)) * (std::erf((y - x) / a - c) + b), 0.F);
     */
-    return std::min(pow(std::max(y - x, 0.0F) / 5.F, 2.F), 1.F);
+    return std::min(pow(std::max(y - x, 0.0F) / 10.F, 1.F), 1.F);
 }
 
 double calcEffOD(Chart* c, Mods mods) {
@@ -132,7 +132,7 @@ float calcMain(Chart* c, float goal, Mods mods) {
 
     //pmod apply loop
     for (int i = 0; i < c->NoteData.baseDiffs.size(); i++) {
-        c->NoteData.adj_diffs[i] *= ChaosMod.pmodValues[i];
+        //c->NoteData.adj_diffs[i] *= ChaosMod.pmodValues[i];
         c->NoteData.adj_diffs[i] *= CDMod.pmodValues[i];
         c->NoteData.adj_diffs[i] *= CD2Mod.pmodValues[i];
         c->NoteData.adj_diffs[i] *= StamMod.pmodValues[i];

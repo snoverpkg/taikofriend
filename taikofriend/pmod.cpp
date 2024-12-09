@@ -235,7 +235,7 @@ void StreamLengthBonus::calcBonus(Chart* c) {
 		else {
 			len = 1;
 		}
-		this->pmodValues.push_back(std::clamp(this->base + 1.F - scaler / std::pow((float)len, 1 / this->magnitude), this->minMod, this->maxMod));
+		this->pmodValues.push_back(std::clamp(this->base + 1.F - scaler / std::pow((float)len, this->magnitude), this->minMod, this->maxMod));
 	}
 }
 #pragma endregion

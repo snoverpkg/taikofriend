@@ -48,11 +48,12 @@ public:
 
 class StreamLengthBonus : public PMod {
 public:
+	//magic numbers created by a magic system of equations
 	const float base = 0.25F;
-	const float scaler = 1.F;
-	const float magnitude = 2.F;
+	const float scaler = 0.460567F;
+	const float magnitude = 0.379634F;
 	const float minMod = 1.F;
-	const float maxMod = 1.3F;
+	const float maxMod = 1.F + base;
 	const float stringProp = 0.6F;
 	void calcBonus(Chart* c);
 };
