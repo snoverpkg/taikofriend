@@ -58,7 +58,7 @@ double calcEffOD(Chart* c, Mods mods) {
     double od = c->MetaData.od;
     if (mods & Mods::HR) od *= 1.4F;
     if (mods & Mods::EZ) od *= 0.5F;
-    od = std::min(od, (double)10);
+    od = std::clamp(od, (double)0, (double)10);
     if (mods & Mods::HT) {
         od /= 0.75F;
         od -= 5.5F;
