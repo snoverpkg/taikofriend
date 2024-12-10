@@ -71,6 +71,10 @@ double calcEffOD(Chart* c, Mods mods) {
     return od;
 }
 
+float grindScaler(float length) {
+    return std::clamp(-1.F / sqrt(length / 1000.F) + 1.1291F, 0.F, 1.F);
+}
+
 float diffIteration(std::vector<float>* diffs, float goal) {
     float ratingLow = 0.F;
     float ratingHigh = 40.F;
@@ -149,7 +153,8 @@ float calcMain(Chart* c, float goal, Mods mods) {
 
     float od = calcEffOD(c, mods);
     float odMult = odAdjust(od);
-    return diffIteration(&c->NoteData.adj_diffs, goal) * odMult * accCapMult;
+    float grindMult = grindScaler(c->NoteData.NoteInfo[c->NoteData.NoteInfo.size() - 1].first - c->NoteData.NoteInfo[0].first);
+    return diffIteration(&c->NoteData.adj_diffs, goal) * odMult * accCapMult * grindMult;
 }
 
 float odAdjust(double od) {
