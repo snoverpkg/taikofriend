@@ -71,8 +71,9 @@ double calcEffOD(Chart* c, Mods mods) {
     return od;
 }
 
+//nerf files under 90 seconds
 float grindScaler(float length) {
-    return std::clamp(-1.F / sqrt(length / 1000.F) + 1.1291F, 0.F, 1.F);
+    return std::clamp(-1.F / sqrt(length / 1000.F) + 1.10541F, 0.F, 1.F);
 }
 
 float diffIteration(std::vector<float>* diffs, float goal) {
