@@ -73,9 +73,9 @@ double calcEffOD(Chart* c, Mods mods) {
 
 //nerf files under 90 seconds
 float grindScaler(float length, Mods mods) {
-    float timeMult = 1;
-    if (mods & Mods::DT) timeMult / 1.5F;
-    if (mods & Mods::HT) timeMult / 0.75F;
+    float timeMult = 1.F;
+    if (mods & Mods::DT) timeMult /= 1.5F;
+    if (mods & Mods::HT) timeMult /= 0.75F;
     return std::clamp(-1.F / sqrt(length * timeMult / 1000.F) + 1.10541F, 0.F, 1.F);
 }
 
