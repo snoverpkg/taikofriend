@@ -28,7 +28,7 @@ float ptLoss(float x, float y);
 
 double calcEffOD(Chart* c, Mods mods);
 
-float grindScaler(float length);
+float grindScaler(float length, Mods mods);
 
 float diffIteration(std::vector<float>* diffs, float goal);
 
@@ -38,4 +38,4 @@ float odAdjust(double od);
 
 float accLinearExtrapolation(float acc);
 
-const int calcver = 23;
+const int calcver = 24;
