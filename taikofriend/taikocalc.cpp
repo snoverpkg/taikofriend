@@ -157,7 +157,7 @@ float calcMain(Chart* c, float goal, Mods mods) {
 
     float od = calcEffOD(c, mods);
     float odMult = odAdjust(od);
-    float grindMult = grindScaler(c->noteData.NoteInfo[c->noteData.NoteInfo.size() - 1].first - c->noteData.NoteInfo[0].first);
+    float grindMult = grindScaler(c->noteData.NoteInfo[c->noteData.NoteInfo.size() - 1].first - c->noteData.NoteInfo[0].first, mods);
     return diffIteration(&c->noteData.adj_diffs, goal) * odMult * accCapMult * grindMult;
 }
 
