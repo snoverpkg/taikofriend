@@ -244,11 +244,11 @@ int main(int, char**)
                     if (saveScore) {
                         std::ofstream scoreFile("scores.csv", std::ios::app);
                         if (scoreFile.is_open()) {
-                            scoreFile << chart.MetaData.artist << ","
-                                << chart.MetaData.title << ","
-                                << chart.MetaData.creator << ","
-                                << chart.MetaData.diff << ","
-                                << chart.MetaData.id << ","
+                            scoreFile << chart.metaData.artist << ","
+                                << chart.metaData.title << ","
+                                << chart.metaData.creator << ","
+                                << chart.metaData.diff << ","
+                                << chart.metaData.id << ","
                                 << formatTime(clock.to_time_t(clock.now())) << ","
                                 << modString << ","
                                 << acc << ","
@@ -299,10 +299,10 @@ int main(int, char**)
 
                 for (int i = 0; i < scores.size(); i++) {
                     scores[i].Rating = std::sqrt(scores[i].Rating / ppscaler);
-                    std::string path = chartFinder(scores[i].Chart.MetaData);
+                    std::string path = chartFinder(scores[i].Chart.metaData);
                     if (path == "failed") continue;
                     Chart thisChart = chartReader(path, true);
-                    if (thisChart.MetaData.diff != scores[i].Chart.MetaData.diff) continue;
+                    if (thisChart.metaData.diff != scores[i].Chart.metaData.diff) continue;
                     scores[i].Chart = thisChart;
                     scores[i].Rating = calcMain(&scores[i].Chart, scores[i].Acc, (Mods)scores[i].Mods);
                     //remove chart data later when it matters (it won't)
@@ -314,11 +314,11 @@ int main(int, char**)
                 }
                 else {
                     for (int i = 0; i < scores.size(); i++) {
-                        scoreRecalc << scores[i].Chart.MetaData.artist << ","
-                            << scores[i].Chart.MetaData.title << ","
-                            << scores[i].Chart.MetaData.creator << ","
-                            << scores[i].Chart.MetaData.diff << ","
-                            << scores[i].Chart.MetaData.id << ","
+                        scoreRecalc << scores[i].Chart.metaData.artist << ","
+                            << scores[i].Chart.metaData.title << ","
+                            << scores[i].Chart.metaData.creator << ","
+                            << scores[i].Chart.metaData.diff << ","
+                            << scores[i].Chart.metaData.id << ","
                             << scores[i].Date << ","
                             << scores[i].ModString << ","
                             << scores[i].Acc << ","
@@ -361,13 +361,13 @@ int main(int, char**)
                 float rabbit = 1;
 
                 std::ofstream calcDebugFile("debug.txt");
-                for (int i = 0; i < chart.NoteData.baseDiffs.size(); i++) {
-                    calcDebugFile << chart.NoteData.NoteInfo[i].first << "," 
-                        << chart.NoteData.NoteInfo[i].second << "," 
-                        << chart.NoteData.NoteMS[i] << "," 
-                        << chart.NoteData.adjMS[i] << "," 
-                        << chart.NoteData.adj_diffs[i] << "," 
-                        << ptLoss(squd, chart.NoteData.adj_diffs[i]) << "," 
+                for (int i = 0; i < chart.noteData.baseDiffs.size(); i++) {
+                    calcDebugFile << chart.noteData.NoteInfo[i].first << "," 
+                        << chart.noteData.NoteInfo[i].second << "," 
+                        << chart.noteData.NoteMS[i] << "," 
+                        << chart.noteData.adjMS[i] << "," 
+                        << chart.noteData.adj_diffs[i] << "," 
+                        << ptLoss(squd, chart.noteData.adj_diffs[i]) << "," 
                         << ChaosMod.pmodValues[i] << "," 
                         << CDMod.pmodValues[i] << ","
                         << StamMod.pmodValues[i] << ","
@@ -378,7 +378,7 @@ int main(int, char**)
 
                 for (int i = 0; i < 1000; i++) {
                     rabbit = 1.F - (i / 1000.F);
-                    squd = diffIteration(&chart.NoteData.adj_diffs, rabbit) * odAdjust(calcEffOD(&chart, (Mods)mods)) * accLinearExtrapolation(rabbit);
+                    squd = diffIteration(&chart.noteData.adj_diffs, rabbit) * odAdjust(calcEffOD(&chart, (Mods)mods)) * accLinearExtrapolation(rabbit);
                     calcDebugFile << rabbit << "," << squd << "," << squd * squd * ppscaler << std::endl;
                 }
                 calcDebugFile.close();
@@ -420,10 +420,10 @@ int main(int, char**)
                             Chart chart = chartReader(curPath, true);
                             float rating = calcMain(&chart, 0.95F, mods);
 
-                            calcFile << chart.MetaData.artist << ","
-                                << chart.MetaData.title << ","
-                                << chart.MetaData.creator << ","
-                                << chart.MetaData.diff << ","
+                            calcFile << chart.metaData.artist << ","
+                                << chart.metaData.title << ","
+                                << chart.metaData.creator << ","
+                                << chart.metaData.diff << ","
                                 << modsString << ","
                                 << rating / 2 << std::endl;
                         }

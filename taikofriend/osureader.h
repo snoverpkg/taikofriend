@@ -28,8 +28,8 @@ struct MetaData {
 };
 
 struct Chart {
-	NoteData NoteData;
-	MetaData MetaData;
+	NoteData noteData;
+	MetaData metaData;
 };
 
 struct Score {

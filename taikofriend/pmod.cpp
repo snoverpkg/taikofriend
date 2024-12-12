@@ -25,9 +25,9 @@ void Chaos::calcChaos(Chart* c) {
 	bool chaosFlag = false;
 	std::vector<bool> chaosFlags;
 	chaosFlags.push_back(chaosFlag);
-	for (int i = 1; i < c->NoteData.NoteMS.size(); i++) {
-		float curNote = c->NoteData.NoteMS[i];
-		float lastNote = c->NoteData.NoteMS[i - 1];
+	for (int i = 1; i < c->noteData.NoteMS.size(); i++) {
+		float curNote = c->noteData.NoteMS[i];
+		float lastNote = c->noteData.NoteMS[i - 1];
 		if (std::abs(curNote - lastNote) > curNote * this->chaosThreshold) {
 			chaosFlag = true;
 		}
@@ -39,7 +39,7 @@ void Chaos::calcChaos(Chart* c) {
 
 	int chaosSum = 0;
 	std::vector<int> windowSums;
-	for (int i = 0; i < c->NoteData.NoteMS.size(); i++) {
+	for (int i = 0; i < c->noteData.NoteMS.size(); i++) {
 		chaosSum = 0;
 		for (int j = 0; (j < chaosWindow) && (i - j >= 0); j++) {
 			chaosSum += chaosFlags[j];
@@ -61,13 +61,13 @@ void ConsecutiveDoubles::calcCD(Chart* c) {
 	bool curNoteColor = 0;
 	bool lastNoteColor = 0;
 	bool parity = 0;
-	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
+	for (int i = 0; i < c->noteData.NoteInfo.size(); i++) {
 		if (i == 0) {
 			even.push_back(0);
 			continue;
 		}
 		lastNoteColor = curNoteColor;
-		curNoteColor = c->NoteData.NoteInfo[i].second & 1;
+		curNoteColor = c->noteData.NoteInfo[i].second & 1;
 		parity = i % 2;
 		switch (parity) {
 		case 0:
@@ -117,7 +117,7 @@ void ConsecutiveDoubles::calcCD(Chart* c) {
 
 	unsigned int index = 0;
 	float min = 1.F;
-	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
+	for (int i = 0; i < c->noteData.NoteInfo.size(); i++) {
 		index = std::floor((float)i / 2.F);
 		min = evenVals[index];
 		if (index < oddVals.size()) {
@@ -137,14 +137,14 @@ void ConsecutiveDoublesTheSequel::calcCD(Chart* c) {
 	bool lastNoteColor = 0;
 	bool lastLastNoteColor = 0;
 	bool parity = 0;
-	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
+	for (int i = 0; i < c->noteData.NoteInfo.size(); i++) {
 		if (i == 0) {
 			even.push_back(0);
 			continue;
 		}
 		lastLastNoteColor = lastNoteColor;
 		lastNoteColor = curNoteColor;
-		curNoteColor = c->NoteData.NoteInfo[i].second & 1;
+		curNoteColor = c->noteData.NoteInfo[i].second & 1;
 		parity = i % 2;
 		switch (parity) {
 		case 0:
@@ -194,7 +194,7 @@ void ConsecutiveDoublesTheSequel::calcCD(Chart* c) {
 
 	unsigned int index = 0;
 	float min = 1.F;
-	for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
+	for (int i = 0; i < c->noteData.NoteInfo.size(); i++) {
 		index = std::floor((float)i / 2.F);
 		min = evenVals[index];
 		if (index < oddVals.size()) {
@@ -208,12 +208,12 @@ void ConsecutiveDoublesTheSequel::calcCD(Chart* c) {
 #pragma region Stamina
 void Stamina::calcStam(Chart* c, float rating) {
 	float curMod = this->floor;
-	for (int i = 0; i < c->NoteData.baseDiffs.size(); i++) {
-		if ((c->NoteData.baseDiffs[i] / rating) >= this->stamProp) {
-			curMod += c->NoteData.NoteMS[i] / (this->magnitude * 1000.F);
+	for (int i = 0; i < c->noteData.baseDiffs.size(); i++) {
+		if ((c->noteData.baseDiffs[i] / rating) >= this->stamProp) {
+			curMod += c->noteData.NoteMS[i] / (this->magnitude * 1000.F);
 		}
 		else {
-			curMod -= this->coolingRate * c->NoteData.NoteMS[i] / (this->magnitude * 1000.F);
+			curMod -= this->coolingRate * c->noteData.NoteMS[i] / (this->magnitude * 1000.F);
 		}
 		curMod = std::clamp(curMod, this->floor, this->ceil);
 		this->pmodValues.push_back(curMod);
@@ -225,9 +225,9 @@ void Stamina::calcStam(Chart* c, float rating) {
 void StreamLengthBonus::calcBonus(Chart* c) {
 	int len = 1;
 	this->pmodValues.push_back(this->minMod);
-	for (int i = 1; i < c->NoteData.NoteMS.size(); i++) {
-		float curNote = c->NoteData.NoteMS[i];
-		float lastNote = c->NoteData.NoteMS[i - 1];
+	for (int i = 1; i < c->noteData.NoteMS.size(); i++) {
+		float curNote = c->noteData.NoteMS[i];
+		float lastNote = c->noteData.NoteMS[i - 1];
 		//potentially abusable, ignore until it becomes a problem
 		if ((this->stringProp < curNote / lastNote) && (curNote / lastNote < (1.F / this->stringProp))) {
 			len++;

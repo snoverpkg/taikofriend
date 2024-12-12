@@ -41,7 +41,7 @@ Chart chartReader(std::string path, bool processNotes) {
                             curNoteData.push_back(x);
                         }
                         if (line.length() > 0) {
-                            chart.NoteData.NoteInfo.push_back(std::make_pair(std::stoi(curNoteData[2]), std::stoi(curNoteData[4])));
+                            chart.noteData.NoteInfo.push_back(std::make_pair(std::stoi(curNoteData[2]), std::stoi(curNoteData[4])));
                         }
                     }
                     if (readInfo && line != "[Difficulty]") {
@@ -79,12 +79,12 @@ Chart chartReader(std::string path, bool processNotes) {
 
     if (chartInfo.size() == 6) {
         try {
-            chart.MetaData.title = '"' + chartInfo[0] + '"';
-            chart.MetaData.artist = '"' + chartInfo[1] + '"';
-            chart.MetaData.creator = '"' + chartInfo[2] + '"';
-            chart.MetaData.diff = '"' + chartInfo[3] + '"';
-            chart.MetaData.id = std::stoi(chartInfo[4]);
-            chart.MetaData.od = std::stod(chartInfo[5]);
+            chart.metaData.title = '"' + chartInfo[0] + '"';
+            chart.metaData.artist = '"' + chartInfo[1] + '"';
+            chart.metaData.creator = '"' + chartInfo[2] + '"';
+            chart.metaData.diff = '"' + chartInfo[3] + '"';
+            chart.metaData.id = std::stoi(chartInfo[4]);
+            chart.metaData.od = std::stod(chartInfo[5]);
         }
         catch (...) {  
         }
@@ -97,13 +97,13 @@ Chart chartReader(std::string path, bool processNotes) {
 }
 
 void noteInterpreter(Chart* c) {
-    for (int i = 0; i < c->NoteData.NoteInfo.size(); i++) {
-        bool color1 = c->NoteData.NoteInfo[i].second & 8;
-        bool color2 = c->NoteData.NoteInfo[i].second & 2;
+    for (int i = 0; i < c->noteData.NoteInfo.size(); i++) {
+        bool color1 = c->noteData.NoteInfo[i].second & 8;
+        bool color2 = c->noteData.NoteInfo[i].second & 2;
         bool color = color1 || color2;
-        bool big = c->NoteData.NoteInfo[i].second & 4;
+        bool big = c->noteData.NoteInfo[i].second & 4;
         unsigned int note = color + (2 * big);
-        c->NoteData.NoteInfo[i].second = note;
+        c->noteData.NoteInfo[i].second = note;
     }
 }
 
@@ -120,7 +120,7 @@ std::mutex mtx;
 void writePaths(std::ofstream* file) {
     for (auto c : paths) {
         Chart chart = chartReader(c, false);
-        std::string chartInfo = chart.MetaData.artist + chart.MetaData.title + chart.MetaData.creator + chart.MetaData.diff;
+        std::string chartInfo = chart.metaData.artist + chart.metaData.title + chart.metaData.creator + chart.metaData.diff;
 
         if (file->is_open()) {
             *file << chartInfo << std::endl << c << std::endl;
@@ -275,11 +275,11 @@ Score readScore(std::string scoreData) {
         return score;
     }
 
-    score.Chart.MetaData.artist = metadata[0];
-    score.Chart.MetaData.title = metadata[1];
-    score.Chart.MetaData.creator = metadata[2];
-    score.Chart.MetaData.diff = metadata[3];
-    score.Chart.MetaData.id = std::stoi(metadata[4]);
+    score.Chart.metaData.artist = metadata[0];
+    score.Chart.metaData.title = metadata[1];
+    score.Chart.metaData.creator = metadata[2];
+    score.Chart.metaData.diff = metadata[3];
+    score.Chart.metaData.id = std::stoi(metadata[4]);
     score.Date = metadata[5];
     score.ModString = metadata[6];
     score.Acc = std::stof(metadata[7]);

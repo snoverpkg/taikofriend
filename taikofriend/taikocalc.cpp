@@ -2,28 +2,28 @@
 #include <math.h>
 
 void calcMS(Chart* c, Mods mods) {
-    c->NoteData.NoteMS.push_back(defaultMS);
+    c->noteData.NoteMS.push_back(defaultMS);
     float rateModifier = 1;
     if (mods & Mods::HT) rateModifier *= 0.75F;
     if (mods & Mods::DT) rateModifier *= 1.5F;
-    for (int note = 1; note < c->NoteData.NoteInfo.size(); note++) {
-        int curMS = c->NoteData.NoteInfo[note].first;
-        int prevMS = c->NoteData.NoteInfo[note - 1].first;
-        c->NoteData.NoteMS.push_back(std::max((float)(curMS - prevMS) / rateModifier, minMS));
+    for (int note = 1; note < c->noteData.NoteInfo.size(); note++) {
+        int curMS = c->noteData.NoteInfo[note].first;
+        int prevMS = c->noteData.NoteInfo[note - 1].first;
+        c->noteData.NoteMS.push_back(std::max((float)(curMS - prevMS) / rateModifier, minMS));
     }
 }
 
 void smoothMS(Chart* c) {
-    if (smoothWindow > c->NoteData.NoteMS.size()) return;
+    if (smoothWindow > c->noteData.NoteMS.size()) return;
 
     std::vector<float> smoothie;
     for (int i = 0; i < smoothWindow; i++) {
         smoothie.push_back(defaultMS);
     }
 
-    for (int note = 0; note < c->NoteData.NoteMS.size(); note++) {
+    for (int note = 0; note < c->noteData.NoteMS.size(); note++) {
         smoothie.erase(smoothie.begin());
-        float curMS = c->NoteData.NoteMS[note];
+        float curMS = c->noteData.NoteMS[note];
         smoothie.push_back(curMS);
         float totalMS = 1;
         for (int i = 0; i < smoothWindow; i++) {
@@ -31,13 +31,13 @@ void smoothMS(Chart* c) {
         }
         //totalMS /= smoothWindow;
         totalMS = (1 - curNoteWeight) * totalMS + curNoteWeight * curMS;
-        c->NoteData.adjMS.push_back(totalMS);
+        c->noteData.adjMS.push_back(totalMS);
     }
 }
 
 void baseDiffCalc(Chart* c) {
-    for (int i = 0; i < c->NoteData.adjMS.size(); i++) {
-        c->NoteData.baseDiffs.push_back(1000 / (c->NoteData.adjMS[i] / baseScaler));
+    for (int i = 0; i < c->noteData.adjMS.size(); i++) {
+        c->noteData.baseDiffs.push_back(1000 / (c->noteData.adjMS[i] / baseScaler));
     }
 }
 
@@ -56,7 +56,7 @@ float ptLoss(float x, float y) {
 }
 
 double calcEffOD(Chart* c, Mods mods) {
-    double od = c->MetaData.od;
+    double od = c->metaData.od;
     if (mods & Mods::HR) od *= 1.4F;
     if (mods & Mods::EZ) od *= 0.5F;
     od = std::clamp(od, (double)0, (double)10);
@@ -108,12 +108,12 @@ float diffIteration(std::vector<float>* diffs, float goal) {
 }
 
 float calcMain(Chart* c, float goal, Mods mods) {
-    if (c->NoteData.NoteInfo.size() == 0) {
+    if (c->noteData.NoteInfo.size() == 0) {
         std::cout << "file not found: " << 
-            c->MetaData.artist << " - " <<
-            c->MetaData.title << " (" <<
-            c->MetaData.creator << ") [" <<
-            c->MetaData.diff << "]" << std::endl;
+            c->metaData.artist << " - " <<
+            c->metaData.title << " (" <<
+            c->metaData.creator << ") [" <<
+            c->metaData.diff << "]" << std::endl;
         return 0;
     }
 
@@ -125,7 +125,7 @@ float calcMain(Chart* c, float goal, Mods mods) {
 
     noteInterpreter(c);
 
-    c->NoteData.adj_diffs = c->NoteData.baseDiffs;
+    c->noteData.adj_diffs = c->noteData.baseDiffs;
 
     //main pmod calc part sex indian orgy desi feet
     ChaosMod.calcChaos(c);
@@ -134,15 +134,15 @@ float calcMain(Chart* c, float goal, Mods mods) {
     LengthMod.calcBonus(c);
 
     //run stammod on base diffs since that's a better representation of the actual physical difficulty
-    StamMod.calcStam(c, diffIteration(&c->NoteData.baseDiffs, goal));
+    StamMod.calcStam(c, diffIteration(&c->noteData.baseDiffs, goal));
 
     //pmod apply loop
-    for (int i = 0; i < c->NoteData.baseDiffs.size(); i++) {
+    for (int i = 0; i < c->noteData.baseDiffs.size(); i++) {
         //c->NoteData.adj_diffs[i] *= ChaosMod.pmodValues[i];
-        c->NoteData.adj_diffs[i] *= CDMod.pmodValues[i];
-        c->NoteData.adj_diffs[i] *= CD2Mod.pmodValues[i];
-        c->NoteData.adj_diffs[i] *= StamMod.pmodValues[i];
-        c->NoteData.adj_diffs[i] *= LengthMod.pmodValues[i];
+        c->noteData.adj_diffs[i] *= CDMod.pmodValues[i];
+        c->noteData.adj_diffs[i] *= CD2Mod.pmodValues[i];
+        c->noteData.adj_diffs[i] *= StamMod.pmodValues[i];
+        c->noteData.adj_diffs[i] *= LengthMod.pmodValues[i];
     }
 
     //remember to actually clear the pmodvalues so it doesn't break the whole calc...
@@ -154,8 +154,8 @@ float calcMain(Chart* c, float goal, Mods mods) {
 
     float od = calcEffOD(c, mods);
     float odMult = odAdjust(od);
-    float grindMult = grindScaler(c->NoteData.NoteInfo[c->NoteData.NoteInfo.size() - 1].first - c->NoteData.NoteInfo[0].first);
-    return diffIteration(&c->NoteData.adj_diffs, goal) * odMult * accCapMult * grindMult;
+    float grindMult = grindScaler(c->noteData.NoteInfo[c->noteData.NoteInfo.size() - 1].first - c->noteData.NoteInfo[0].first);
+    return diffIteration(&c->noteData.adj_diffs, goal) * odMult * accCapMult * grindMult;
 }
 
 float odAdjust(double od) {
