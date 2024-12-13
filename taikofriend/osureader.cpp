@@ -118,15 +118,22 @@ static std::vector<std::string> paths;
 std::mutex mtx;
 
 void writePaths(std::ofstream* file) {
+    std::string giantAssFuckingPathString;
+
     for (auto c : paths) {
         Chart chart = chartReader(c, false);
         std::string chartInfo = chart.metaData.artist + chart.metaData.title + chart.metaData.creator + chart.metaData.diff;
 
-        if (file->is_open()) {
-            *file << chartInfo << std::endl << c << std::endl;
-        }
+        giantAssFuckingPathString += chartInfo + "\n" + c + "\n";
 
         chartPathsLookupTable.insert(std::make_pair(chartInfo, c));
+    }
+
+    if (file->is_open()) {
+        *file << giantAssFuckingPathString;
+    }
+    else {
+        std::cout << "failed to write to paths.txt" << std::endl;
     }
 }
 
