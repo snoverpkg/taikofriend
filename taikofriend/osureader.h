@@ -55,6 +55,9 @@ void fullProcess();
 void differentialProcess();
 void loadPaths();
 
+//we need to exterminate undesirable characters
+std::string stringCleaner(std::string string);
+
 std::string chartFinder(MetaData zoinkers);
 
 Score readScore(std::string scoreData);

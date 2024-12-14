@@ -23,7 +23,7 @@
 #include <ctime>
 #include "pmod.h"
 
-const int programver = 8;
+const int programver = 9;
 
 Chaos ChaosMod;
 ConsecutiveDoubles CDMod;
@@ -201,10 +201,10 @@ int main(int, char**)
 
             ImGuiInputTextFlags flags = ImGuiInputTextFlags_AutoSelectAll;
 
-            if(ImGui::InputTextWithHint("Artist", "artist", &artist, flags)) currentWorkings.artist = '"' + artist + '"';
-            if(ImGui::InputTextWithHint("Title", "title", &title, flags)) currentWorkings.title = '"' + title + '"';
-            if(ImGui::InputTextWithHint("Creator", "creator", &creator, flags)) currentWorkings.creator = '"' + creator + '"';
-            if(ImGui::InputTextWithHint("Difficulty", "diff", &diff, flags)) currentWorkings.diff = '"' + diff + '"';
+            if(ImGui::InputTextWithHint("Artist", "artist", &artist, flags)) currentWorkings.artist = '"' + stringCleaner(artist) + '"';
+            if(ImGui::InputTextWithHint("Title", "title", &title, flags)) currentWorkings.title = '"' + stringCleaner(title) + '"';
+            if(ImGui::InputTextWithHint("Creator", "creator", &creator, flags)) currentWorkings.creator = '"' + stringCleaner(creator) + '"';
+            if(ImGui::InputTextWithHint("Difficulty", "diff", &diff, flags)) currentWorkings.diff = '"' + stringCleaner(diff) + '"';
 
             artistD = artist.c_str();
             titleD = title.c_str();

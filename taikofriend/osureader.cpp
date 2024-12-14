@@ -57,7 +57,7 @@ Chart chartReader(std::string path, bool processNotes) {
                                 if (x == "Version") {
                                     checkBeatmapID = true;
                                 }
-                                getline(s, x, ':');
+                                getline(s, x);
                                 std::remove(x.begin(), x.end(), ';');
                                 chartInfo.push_back(x);
                             }
@@ -79,10 +79,10 @@ Chart chartReader(std::string path, bool processNotes) {
 
     if (chartInfo.size() == 6) {
         try {
-            chart.metaData.title = '"' + chartInfo[0] + '"';
-            chart.metaData.artist = '"' + chartInfo[1] + '"';
-            chart.metaData.creator = '"' + chartInfo[2] + '"';
-            chart.metaData.diff = '"' + chartInfo[3] + '"';
+            chart.metaData.title = '"' + stringCleaner(chartInfo[0]) + '"';
+            chart.metaData.artist = '"' + stringCleaner(chartInfo[1]) + '"';
+            chart.metaData.creator = '"' + stringCleaner(chartInfo[2]) + '"';
+            chart.metaData.diff = '"' + stringCleaner(chartInfo[3]) + '"';
             chart.metaData.id = std::stoi(chartInfo[4]);
             chart.metaData.od = std::stod(chartInfo[5]);
         }
@@ -306,4 +306,12 @@ std::string getPathFromTable(int index) {
     std::advance(iter, index);
     if (iter == chartPathsLookupTable.end()) return "end";
     return iter->second;
+}
+
+std::string stringCleaner(std::string string) {
+    while (string.find('"') != std::string::npos) {
+        auto qpos = string.find('"');
+        if (qpos != std::string::npos) string.erase(qpos);
+    }
+    return string;
 }
