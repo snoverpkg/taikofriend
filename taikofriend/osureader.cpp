@@ -311,7 +311,7 @@ std::string getPathFromTable(int index) {
 std::string stringCleaner(std::string string) {
     while (string.find('"') != std::string::npos) {
         auto qpos = string.find('"');
-        if (qpos != std::string::npos) string.erase(qpos);
+        if (qpos != std::string::npos) string.erase(qpos, 1);
     }
     return string;
 }
